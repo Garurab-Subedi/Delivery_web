@@ -1,0 +1,23 @@
+/* Reset all margins and paddings */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* App layout - makes page fill viewport and pushes footer to the bottom */
+.app-container {
+  min-height: 100vh; /* full viewport height */
+  display: flex;
+  flex-direction: column;
+}
+
+/* Main content area between Navbar and Footer */
+
+.content {
+  flex: 1;
+  width: 100%; /* fill all available space */
+  margin: 0; /* remove centering margin */
+  padding: 0; /* remove extra padding */
+  max-width: none; /* remove max-width restriction */
+}

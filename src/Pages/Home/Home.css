@@ -1,0 +1,59 @@
+/* .home-menu-btn {
+  text-align: center;
+  margin: 20px 0;
+}
+
+.menu-btn {
+  display: inline-block;
+  padding: 12px 24px;
+  background-color: #7b98b5;
+  color: #fff;
+  text-decoration: none;
+  font-size: 18px;
+  font-weight: bold;
+  border-radius: 8px;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.menu-btn:hover {
+  background-color: #5c7a94;
+  transform: translateY(-2px);
+} */
+
+/* Global reset - add this to index.css for site-wide effect */
+html,
+body,
+#root {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  box-sizing: border-box;
+}
+/* Your Home-specific styles */
+.home-menu-btn {
+  text-align: center;
+  margin: 0;
+}
+.menu-btn {
+  display: inline-block;
+  padding: 12px 24px;
+  background-color: #7b98b5;
+  color: #fff;
+  text-decoration: none;
+  font-size: 18px;
+  font-weight: bold;
+  border-radius: 8px;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+.menu-btn:hover {
+  background-color: #5c7a94;
+  transform: translateY(-2px);
+}
+/* Ensure components fill width */
+.card,
+.food-menu {
+  /* Adjust class names as needed */
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}

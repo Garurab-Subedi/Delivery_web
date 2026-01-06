@@ -1,0 +1,120 @@
+/* Contact.css */
+
+.contact {
+  background-color: #fff8f0; /* soft food-friendly background */
+  padding: 60px 20px;
+  font-family: "Arial", sans-serif;
+  color: #333;
+}
+
+.contact-container {
+  max-width: 900px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.contact-title {
+  font-size: 2.5rem;
+  color: #ff5722; /* warm accent color */
+  text-align: center;
+  font-weight: bold;
+}
+
+.contact-intro {
+  text-align: center;
+  font-size: 1.1rem;
+  color: #555;
+  line-height: 1.6;
+}
+
+.contact-info {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+}
+
+.contact-card {
+  background-color: #fff;
+  border-radius: 12px;
+  padding: 20px 25px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  flex: 1 1 250px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.contact-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+.contact-card h3 {
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+  color: #ff5722;
+}
+
+.contact-card p {
+  font-size: 1rem;
+  color: #555;
+}
+
+.contact-form {
+  background-color: #fff;
+  padding: 30px 25px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.contact-form h3 {
+  font-size: 1.5rem;
+  color: #ff5722;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.contact-form input,
+.contact-form textarea {
+  width: 100%;
+  padding: 12px 15px;
+  margin-bottom: 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 1rem;
+  outline: none;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus {
+  border-color: #ff5722;
+  box-shadow: 0 0 5px rgba(255, 87, 34, 0.3);
+}
+
+.contact-form button {
+  width: 100%;
+  background-color: #ff5722;
+  color: #fff;
+  padding: 12px 0;
+  font-size: 1rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.contact-form button:hover {
+  background-color: #e64a19;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .contact-info {
+    flex-direction: column;
+    align-items: center;
+  }
+}

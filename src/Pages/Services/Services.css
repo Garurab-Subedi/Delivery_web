@@ -1,0 +1,82 @@
+/* === Services Section === */
+.services {
+  background: #fff5f5; /* soft light pinkish background for contrast with red */
+  padding: 60px 20px;
+  text-align: center;
+  font-family: Arial, sans-serif;
+}
+
+.services-container {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+/* Title */
+.services-title {
+  font-size: 2.5rem;
+  color: #b71c1c; /* deep red for main headings */
+  margin-bottom: 20px;
+  font-weight: bold;
+}
+
+/* Intro text */
+.services-intro {
+  font-size: 1.1rem;
+  color: #333;
+  margin-bottom: 40px;
+}
+
+/* Services grid */
+.services-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+}
+
+/* Service cards */
+.service-card {
+  background: #ffffff;
+  padding: 25px 20px;
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border-top: 4px solid #b71c1c; /* red accent stripe */
+}
+
+.service-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* Service headings */
+.service-card h3 {
+  color: #d32f2f; /* brighter red for icons and headings */
+  margin-bottom: 10px;
+  font-size: 1.2rem;
+}
+
+/* Service descriptions */
+.service-card p {
+  font-size: 1rem;
+  color: #555;
+  line-height: 1.5;
+}
+
+/* === Optional: navbar & footer style suggestion === */
+.navbar,
+.footer {
+  background-color: #b71c1c; /* deep red */
+  color: #fff;
+}
+
+.navbar a,
+.footer a {
+  color: #fff;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.navbar a:hover,
+.footer a:hover {
+  color: #ff8a80; /* lighter red on hover */
+}

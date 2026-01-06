@@ -1,0 +1,54 @@
+.navbar {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background: hwb(3 7% 7%);
+  padding: 15px 30px;
+  color: #fff;
+  height: 60px;
+  box-shadow: #0b0b0b;
+}
+
+/* Logo */
+.logo img {
+  height: 50px;
+  width: auto;
+  display: block;
+  margin-left: -210px;
+}
+
+/* Nav links */
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 40px; /* space between links & icons */
+  margin: 0;
+  padding: 0;
+  align-items: center;
+  margin-right: -170px;
+}
+
+.nav-links li a {
+  text-decoration: none;
+  color: #fff;
+  font-size: 18px;
+  transition: color 0.3s;
+}
+
+.nav-links li a.active {
+  color: #1a1816;
+  font-weight: bold;
+}
+
+/* Icons (look same as links, but slightly bigger) */
+.icon {
+  font-size: 20px;
+  color: #fff;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.nav-links li a.active .icon {
+  color: #100f0e;
+  font-weight: bold;
+}
