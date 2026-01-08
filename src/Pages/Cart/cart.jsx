@@ -1,84 +1,85 @@
-import React, { useState, useEffect } from "react";
-import "./Cart.css";
+import React, { useContext } from "react";
+import { CartContext } from "../../context/cartContext";
 import { useNavigate } from "react-router-dom";
 
 const Cart = () => {
-  const [cartItems, setCartItems] = useState([]);
+  const { cartItems, grandTotal, deleteItem, updateQuantity } = useContext(CartContext);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const cart = JSON.parse(localStorage.getItem("app_cart_v1")) || [];
-    setCartItems(cart);
-  }, []);
-
-  const handleQuantity = (name, action) => {
-    setCartItems((prev) =>
-      prev.map((item) => {
-        if (item.name === name) {
-          const newQty =
-            action === "inc"
-              ? item.quantity + 1
-              : item.quantity - 1 > 0
-              ? item.quantity - 1
-              : 1;
-          return { ...item, quantity: newQty, totalPrice: newQty * item.price };
-        }
-        return item;
-      })
-    );
-  };
-
-  const handleRemove = (name) => {
-    const newCart = cartItems.filter((item) => item.name !== name);
-    setCartItems(newCart);
-    localStorage.setItem("app_cart_v1", JSON.stringify(newCart));
-  };
-
-  const handleCheckout = () => {
-    alert("Order placed successfully!");
-    localStorage.removeItem("app_cart_v1");
-    setCartItems([]);
-    navigate("/");
-  };
-
-  const totalAmount = cartItems.reduce((acc, item) => acc + item.totalPrice, 0);
-
-  if (cartItems.length === 0)
-    return <p className="empty-cart">Your cart is empty!</p>;
+  if (!cartItems || cartItems.length === 0) {
+    return <p style={{ textAlign: "center", marginTop: "50px" }}>Your cart is empty</p>;
+  }
 
   return (
-    <div className="cart-page">
+    <div style={{ maxWidth: 900, margin: "auto", padding: 20 }}>
       <h2>Your Cart</h2>
-      <div className="cart-list">
-        {cartItems.map((item) => (
-          <div className="cart-card" key={item.name}>
-            <img src={item.img} alt={item.name} className="cart-img" />
-            <div className="cart-info">
-              <h3>{item.name}</h3>
-              <p>
-                Rs. {item.price} x {item.quantity} = Rs. {item.totalPrice}
-              </p>
-              <div className="quantity-controls">
-                <button onClick={() => handleQuantity(item.name, "dec")}>
-                  -
-                </button>
-                <span>{item.quantity}</span>
-                <button onClick={() => handleQuantity(item.name, "inc")}>
-                  +
-                </button>
-              </div>
+
+      {cartItems.map((item) => (
+        <div
+          key={item.cart_id}
+          style={{
+            display: "flex",
+            alignItems: "center",
+            marginBottom: 20,
+            padding: 10,
+            border: "1px solid #ddd",
+            borderRadius: 8,
+          }}
+        >
+          <img
+            src={`http://localhost/fooddelivery${item.image}`}
+            alt={item.name}
+            style={{ width: 100, borderRadius: 8 }}
+          />
+          <div style={{ marginLeft: 20, flex: 1 }}>
+            <h4>{item.name}</h4>
+            <p>Price: ₹{item.price}</p>
+            <p>Total: ₹{item.total_price}</p>
+
+            <div>
               <button
-                className="remove-btn"
-                onClick={() => handleRemove(item.name)}
+                onClick={() => updateQuantity(item.food_id, item.quantity - 1)}
+                disabled={item.quantity <= 1}
               >
-                Remove
+                −
+              </button>
+              <span style={{ margin: "0 10px" }}>{item.quantity}</span>
+              <button onClick={() => updateQuantity(item.food_id, item.quantity + 1)}>
+                +
               </button>
             </div>
           </div>
-        ))}
-      </div>
-      <h3 className="total-amount">Total: Rs. {totalAmount}</h3>
-      <button className="checkout-btn" onClick={handleCheckout}>
+
+          <button
+            onClick={() => deleteItem(item.cart_id)}
+            style={{
+              backgroundColor: "red",
+              color: "#fff",
+              border: "none",
+              padding: "8px 12px",
+              borderRadius: 5,
+              cursor: "pointer",
+            }}
+          >
+            Delete
+          </button>
+        </div>
+      ))}
+
+      <h3>Grand Total: ₹{grandTotal}</h3>
+
+      <button
+        onClick={() => navigate("/checkout")}
+        style={{
+          marginTop: 20,
+          padding: "12px 25px",
+          backgroundColor: "green",
+          color: "#fff",
+          fontSize: 16,
+          borderRadius: 6,
+          cursor: "pointer",
+        }}
+      >
         Checkout
       </button>
     </div>

@@ -1,121 +1,163 @@
-import React, { useState } from "react";
-import "./Login.css";
-import BackgroundImg from "../../Photos/backgroundimg.png";
+import { useContext, useState } from "react";
+import axiosInstance from "../../api/axios";
+import { AuthContext } from "../../context/AuthContext";
+import "./login.css";
 
-const Login = () => {
-  const [isExistingUser, setIsExistingUser] = useState(true);
-  const [name, setName] = useState("");
-  const [password, setPassword] = useState("");
-  const [address, setAddress] = useState("");
+export default function Login() {
+  const { login } = useContext(AuthContext);
+
+  const [isLoginMode, setIsLoginMode] = useState(true);
+
+  // Login states
   const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-  //user check
-  const checkUserExists = (username) => username === "testuser";
+  // Register states
+  const [name, setName] = useState("");
+  const [regEmail, setRegEmail] = useState("");
+  const [regPassword, setRegPassword] = useState("");
 
-  // Handle login/registration
-  const handleSubmit = (e) => {
-    e.preventDefault();
+const handleLogin = async (e) => {
+  e.preventDefault();
 
-    if (isExistingUser) {
-      if (name && password) {
-        if (checkUserExists(name)) {
-          alert("Login successful!");
-          window.location.href = "/";
-        } else {
-          alert("Invalid username or password.");
-        }
-      } else {
-        alert("Please enter username and password.");
-      }
-    } else {
-      if (name && password && email && address) {
-        alert(`Registration successful!\nWelcome, ${name}!`);
-        window.location.href = "/";
-      } else {
-        alert("Please fill in all fields.");
-      }
+  const formData = new FormData();
+  formData.append("email", email);
+  formData.append("password", password);
+
+  try {
+    const res = await axiosInstance.post("/auth/login.php", formData);
+
+    if (!res.data.success) {
+      alert(res.data.message);
+      return;
     }
-  };
+
+    const userObj = {
+      name: "User",
+      role: res.data.role,
+    }
+    login(res.data.token, userObj);
+    
+    alert("Login Successful");
+    window.location.href = "/";
+  } catch (err) {
+    alert("Login Failed");
+  }
+};
+
+
+  /* ------------------- REGISTER ------------------- */
+const handleRegister = async (e) => {
+  e.preventDefault();
+
+  const formData = new FormData();
+  formData.append("fullName", name);
+  formData.append("email", regEmail);
+  formData.append("password", regPassword);
+
+  try {
+    const res = await axiosInstance.post("/auth/register.php", formData);
+
+    alert(res.data.message);
+
+    if (res.data.success) setIsLoginMode(true);
+  } catch (err) {
+    alert("Registration failed");
+  }
+};
+
 
   return (
-    <div className="login-container">
-      <img src={BackgroundImg} alt="Background" className="background-image" />
+    <div className="auth-container">
+      <div className="auth-card">
+        <h2 className="auth-title">
+          {isLoginMode ? "Welcome Back 👋" : "Create Account 🎉"}
+        </h2>
+        <p className="auth-subtitle">
+          {isLoginMode
+            ? "Login to continue your journey"
+            : "Register to get started"}
+        </p>
 
-      <div className="login-box">
-        <h2>{isExistingUser ? "Login" : "New User Registration"}</h2>
-        <form onSubmit={handleSubmit}>
-          {/* Username */}
-          <label>Username</label>
-          <input
-            type="text"
-            placeholder="Enter your username"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            required
-          />
-
-          {/* Password */}
-          <label>Password</label>
-          <input
-            type="password"
-            placeholder="Enter your password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-
-          {/* Forgot password */}
-          {isExistingUser && (
-            <p
-              className="forgot-password"
-              onClick={() => alert("Password reset feature coming soon!")}
-            >
-              Forgot Password?
-            </p>
-          )}
-
-          {/* Registration fields for new user */}
-          {!isExistingUser && (
-            <>
-              <label>Address</label>
-              <input
-                type="text"
-                placeholder="Enter your address"
-                value={address}
-                onChange={(e) => setAddress(e.target.value)}
-                required
-              />
-
+        {/* LOGIN FORM */}
+        {isLoginMode && (
+          <form onSubmit={handleLogin} className="auth-form">
+            <div className="auth-group">
               <label>Email</label>
               <input
                 type="email"
-                placeholder="Enter your email"
+                placeholder="Enter Email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
               />
-            </>
-          )}
+            </div>
 
-          <button type="submit" className="login-btn">
-            {isExistingUser ? "Login" : "Register"}
-          </button>
+            <div className="auth-group">
+              <label>Password</label>
+              <input
+                type="password"
+                placeholder="Enter Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+            </div>
 
-          <p className="toggle-text">
-            {isExistingUser ? "New user? " : "Already have an account? "}
-            <span
-              className="toggle-link"
-              onClick={() => {
-                setIsExistingUser(!isExistingUser);
-              }}
-            >
-              {isExistingUser ? "Register" : "Login"}
-            </span>
-          </p>
-        </form>
+            <button className="auth-btn">Login</button>
+
+            <p className="toggle-text">
+              Don't have an account?
+              <span onClick={() => setIsLoginMode(false)}> Register</span>
+            </p>
+          </form>
+        )}
+
+        {/* REGISTER FORM */}
+        {!isLoginMode && (
+          <form onSubmit={handleRegister} className="auth-form">
+            <div className="auth-group">
+              <label>Full Name</label>
+              <input
+                type="text"
+                placeholder="Enter Full Name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+              />
+            </div>
+
+            <div className="auth-group">
+              <label>Email</label>
+              <input
+                type="email"
+                placeholder="Enter Email"
+                value={regEmail}
+                onChange={(e) => setRegEmail(e.target.value)}
+                required
+              />
+            </div>
+
+            <div className="auth-group">
+              <label>Password</label>
+              <input
+                type="password"
+                placeholder="Create Password"
+                value={regPassword}
+                onChange={(e) => setRegPassword(e.target.value)}
+                required
+              />
+            </div>
+
+            <button className="auth-btn">Register</button>
+
+            <p className="toggle-text">
+              Already have an account?
+              <span onClick={() => setIsLoginMode(true)}> Login</span>
+            </p>
+          </form>
+        )}
       </div>
     </div>
   );
-};
-
-export default Login;
+}

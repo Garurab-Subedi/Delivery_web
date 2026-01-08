@@ -1,12 +1,10 @@
+
 .navbar {
   display: flex;
   justify-content: space-around;
   align-items: center;
-  background: hwb(3 7% 7%);
-  padding: 15px 30px;
-  color: #fff;
-  height: 60px;
-  box-shadow: #0b0b0b;
+  padding: 20px;
+  
 }
 
 /* Logo */
@@ -36,8 +34,9 @@
 }
 
 .nav-links li a.active {
-  color: #1a1816;
+  color: yellow;
   font-weight: bold;
+  font-size: 24px;
 }
 
 /* Icons (look same as links, but slightly bigger) */
@@ -51,4 +50,31 @@
 .nav-links li a.active .icon {
   color: #100f0e;
   font-weight: bold;
+}
+
+
+.logout-btn{
+  padding: 10px;
+  border: white 2px solid;
+  color: red;
+  border-radius: 8px;
+  background-color: #fff;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+}
+.cart-icon {
+  position: relative;
+  cursor: pointer;
+}
+
+.cart-badge {
+  background: white;
+  color: red;
+  font-size: 12px;
+  padding: 2px 6px;
+  border-radius: 50%;
+  position: absolute;
+  top: -6px;
+  right: -6px;
 }
