@@ -2,9 +2,12 @@ import { useContext, useState } from "react";
 import axiosInstance from "../../api/axios";
 import { AuthContext } from "../../context/AuthContext";
 import "./login.css";
+import { useNavigate } from "react-router-dom";
 
 export default function Login() {
   const { login } = useContext(AuthContext);
+
+  const navigate = useNavigate();
 
   const [isLoginMode, setIsLoginMode] = useState(true);
 
@@ -17,55 +20,58 @@ export default function Login() {
   const [regEmail, setRegEmail] = useState("");
   const [regPassword, setRegPassword] = useState("");
 
-const handleLogin = async (e) => {
-  e.preventDefault();
+  const handleLogin = async (e) => {
+    e.preventDefault();
 
-  const formData = new FormData();
-  formData.append("email", email);
-  formData.append("password", password);
+    const formData = new FormData();
+    formData.append("email", email);
+    formData.append("password", password);
 
-  try {
-    const res = await axiosInstance.post("/auth/login.php", formData);
+    try {
+      const res = await axiosInstance.post("/auth/login.php", formData);
 
-    if (!res.data.success) {
-      alert(res.data.message);
-      return;
+      if (!res.data.success) {
+        alert(res.data.message);
+        return;
+      }
+
+      const userObj = {
+        name: "User",
+        role: res.data.role,
+      };
+
+      login(res.data.token, userObj);
+      // ✅ ROLE-BASED REDIRECT
+      if (res.data.role === "admin") {
+        navigate("/admin");
+      } else {
+        navigate("/");
+      }
+      alert("Login Successful");
+    } catch (err) {
+      alert("Login Failed");
     }
-
-    const userObj = {
-      name: "User",
-      role: res.data.role,
-    }
-    login(res.data.token, userObj);
-    
-    alert("Login Successful");
-    window.location.href = "/";
-  } catch (err) {
-    alert("Login Failed");
-  }
-};
-
+  };
 
   /* ------------------- REGISTER ------------------- */
-const handleRegister = async (e) => {
-  e.preventDefault();
+  const handleRegister = async (e) => {
+    e.preventDefault();
 
-  const formData = new FormData();
-  formData.append("fullName", name);
-  formData.append("email", regEmail);
-  formData.append("password", regPassword);
+    const formData = new FormData();
+    formData.append("fullName", name);
+    formData.append("email", regEmail);
+    formData.append("password", regPassword);
 
-  try {
-    const res = await axiosInstance.post("/auth/register.php", formData);
+    try {
+      const res = await axiosInstance.post("/auth/register.php", formData);
 
-    alert(res.data.message);
+      alert(res.data.message);
 
-    if (res.data.success) setIsLoginMode(true);
-  } catch (err) {
-    alert("Registration failed");
-  }
-};
-
+      if (res.data.success) setIsLoginMode(true);
+    } catch (err) {
+      alert("Registration failed");
+    }
+  };
 
   return (
     <div className="auth-container">

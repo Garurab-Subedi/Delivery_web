@@ -1,9 +1,15 @@
 import { createContext, useEffect, useState } from "react";
 import axiosInstance from "../api/axios";
 
-export const FoodContext = createContext(null);
+export const FoodContext = createContext({
+  categories: [],
+  randomFoods: [],
+  foodsByCategory: [],
+  loading: false,
+  getCategories: () => {},
+});
 
-export default function FoodProvider({ children }) {
+export const FoodProvider = ({ children }) => {
   const [categories, setCategories] = useState([]);
   const [randomFoods, setRandomFoods] = useState([]);
   const [foodsByCategory, setFoodsByCategory] = useState([]);
@@ -11,40 +17,33 @@ export default function FoodProvider({ children }) {
 
   const getCategories = async () => {
     try {
-      setLoading(true);
       const res = await axiosInstance.get("/getCategory.php");
-      if (res.data.success) setCategories(res.data.categories);
+      console.log("Category API:", res.data);
+      if (res.data.success) {
+        setCategories(res.data.data); // ✅ FIX HERE
+      }
     } catch (e) {
-      console.log(e);
-    } finally {
-      setLoading(false);
+      console.log("Category fetch error:", e);
     }
   };
 
-const getRandomFoods = async () => {
-  try {
-    setLoading(true);
-    const res = await axiosInstance.get("/getRandomFood.php");
-    if (res.data.success) setRandomFoods(res.data.data);
-  } catch (e) {
-    console.log(e);
-  } finally {
-    setLoading(false);
-  }
-};
-
+  const getRandomFoods = async () => {
+    try {
+      const res = await axiosInstance.get("/getRandomFood.php");
+      if (res.data.success) setRandomFoods(res.data.data);
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   const getFoodsByCategory = async (category) => {
     try {
-      setLoading(true);
       const res = await axiosInstance.get(
-        `/getFoodsByCategory.php?category=${category}`
+        `/getFoodsByCategory.php?category=${category}`,
       );
       if (res.data.success) setFoodsByCategory(res.data.foods);
     } catch (e) {
       console.log(e);
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -68,4 +67,4 @@ const getRandomFoods = async () => {
       {children}
     </FoodContext.Provider>
   );
-}
+};
